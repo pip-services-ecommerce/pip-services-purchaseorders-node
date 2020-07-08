@@ -1,2 +1,2 @@
-// export { PurchaseOrdersProcess } from './PurchaseOrdersProcess';
-// export { PurchaseOrdersLambdaFunction } from './PurchaseOrdersLambdaFunction';
+export { PurchaseOrdersProcess } from './PurchaseOrdersProcess';
+export { PurchaseOrdersLambdaFunction } from './PurchaseOrdersLambdaFunction';

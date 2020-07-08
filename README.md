@@ -29,48 +29,64 @@ Logical contract of the microservice is presented below. For physical implementa
 please, refer to documentation of the specific protocol.
 
 ```typescript
-class AddressV1 {
+export class ShippingDetailsV1 {
+    public recipient: string;
+    public phone?: string;
     public line1: string;
     public line2?: string;
     public city: string;
-    public postal_code?: string;
+    public state?: string;
     public postal_code?: string;
     public country_code: string; // ISO 3166-1
+    public instructions?: string;
+}
+
+export class PurchaseItemV1 {
+    public product_id: string;
+    public product_name: string;
+    public description?: string;
+    public quantity: number;
+    public price: number;
+    public discount?: number;
+    public discount_price?: number;
+    public total: number;
 }
 
 class PurchaseOrderV1 implements IStringIdentifiable {
     public id: string;
+    public number?: string;
     public customer_id: string;
+    public state?: string;
+    public state_details?: string;
+    public currency_code: string;
 
     public create_time?: Date;
     public update_time?: Date;
+    public paid_time?: Date;
+    public refunded_time?: Date;
     
-    public type?: string;
-    public number?: string;
-    public expire_month?: number;
-    public expire_year?: number;
-    public first_name?: string;
-    public last_name?: string;
-    public billing_address?: AddressV1;
-    public state?: string;
-    public ccv?: string;
+    public payment_method_id?: string;
+    public payment_id?: string;
+    
+    public shipping_details?: ShippingDetailsV1;
+    public items?: PurchaseItemV1[];
 
-    public name?: string;
-    public saved?: boolean;
-    public default?: boolean;
+    public subtotal?: number;
+    public discount?: number;
+    public discount_code?: string;
+    public shipping_cost?: number;
+    public tax_percent?: number;
+    public tax?: number;
+    public other_cost?: number;
+    public total: number;
 }
 
-class PurchaseOrderTypeV1 {
-    public static readonly Visa = "visa";
-    public static readonly Masterorder = "masterorder";
-    public static readonly AmericanExpress = "amex";
-    public static readonly Discover = "discover";
-    public static readonly Maestro = "maestro";
-}
-
-class PurchaseOrderStateV1 {
-    public static Ok: string = "ok";
-    public static Expired: string = "expired";
+export class PurchaseOrderStateV1 {
+    public static New: string = "new";
+    public static Canceled: string = "canceled";
+    public static Paid: string = "paid";
+    public static Failed: string = "failed";
+    public static Refunded: string = "refunded";
 }
 
 interface IPurchaseOrdersV1 {
@@ -190,24 +206,27 @@ Now the client is ready to perform operations
 ```javascript
 // Create a new purchase_order
 var purchase_order = {
+    id: '1',
     customer_id: '1',
-    type: 'visa',
-    number: '1111111111111111',
-    expire_month: 1,
-    expire_year: 2021,
-    first_name: 'Bill',
-    last_name: 'Gates',
-    billing_address: {
-        line1: '2345 Swan Rd',
-        city: 'Tucson',
-        postal_code: '85710',
-        country_code: 'US'
+    currency_code: 'USD',
+    total: 100,
+    state: PurchaseOrderStateV1.New,
+    items: [{
+        price: 40,
+        product_id: 'product-1',
+        product_name: 'product name 1',
+        quantity: 2,
+        total: 80,
+        description: 'desctiption for product 1',
     },
-    ccv: '213',
-    name: 'Test Order 1',
-    saved: true,
-    default: true,
-    state: 'ok'
+    {
+        price: 20,
+        product_id: 'product-2',
+        product_name: 'product name 2',
+        quantity: 1,
+        total: 20,
+        description: 'desctiption for product 2',
+    }]
 };
 
 client.createOrder(
@@ -220,12 +239,12 @@ client.createOrder(
 ```
 
 ```javascript
-// Get the list of purchase_orders on 'time management' topic
+// Get the list of purchase_orders
 client.getOrders(
     null,
     {
         customer_id: '1',
-        state: 'ok'
+        state: 'new'
     },
     {
         total: true,

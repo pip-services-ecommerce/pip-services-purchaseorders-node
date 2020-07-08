@@ -1,2 +1,2 @@
-// export { IPurchaseOrdersController } from './IPurchaseOrdersController';
-// export { PurchaseOrdersController } from './PurchaseOrdersController';
+export { IPurchaseOrdersController } from './IPurchaseOrdersController';
+export { PurchaseOrdersController } from './PurchaseOrdersController';

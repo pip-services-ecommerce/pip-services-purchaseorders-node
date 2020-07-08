@@ -1,1 +1,1 @@
-// export { PurchaseOrdersServiceFactory } from './PurchaseOrdersServiceFactory';
+export { PurchaseOrdersServiceFactory } from './PurchaseOrdersServiceFactory';
