@@ -6,6 +6,7 @@ export class PurchaseItemV1Schema extends ObjectSchema {
     public constructor() {
         super();
         this.withRequiredProperty('product_id', TypeCode.String);
+        this.withOptionalProperty('product_name', TypeCode.String);
         this.withOptionalProperty('description', TypeCode.String);
         this.withRequiredProperty('quantity', TypeCode.Float);
         this.withRequiredProperty('price', TypeCode.Float);

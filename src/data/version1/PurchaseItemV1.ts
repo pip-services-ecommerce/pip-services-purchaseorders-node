@@ -1,5 +1,6 @@
 export class PurchaseItemV1 {
     public product_id: string;
+    public product_name: string;
     public description?: string;
     public quantity: number;
     public price: number;

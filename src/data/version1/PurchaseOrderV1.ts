@@ -8,6 +8,7 @@ export class PurchaseOrderV1 implements IStringIdentifiable {
     public customer_id: string;
     public state?: string;
     public state_details?: string;
+    public currency_code: string;
 
     public create_time?: Date;
     public update_time?: Date;
