@@ -207,6 +207,25 @@ export class PurchaseOrdersPersistenceFixture {
                     }
                 );
             },
+            // Get purchase orders by create time
+            (callback) => {
+                this._persistence.getPageByFilter(
+                    null,
+                    FilterParams.fromValue({
+                        created_from: new Date(2000, 1, 1),
+                        created_to: new Date(2020, 12, 31),    
+                    }),
+                    new PagingParams(),
+                    (err, page) => {
+                        assert.isNull(err);
+
+                        assert.isObject(page);
+                        assert.lengthOf(page.data, 2);
+
+                        callback();
+                    }
+                );
+            },
         ], done);
     }
 

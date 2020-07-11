@@ -110,6 +110,25 @@ suite('PurchaseOrdersHttpServiceV1', () => {
                     }
                 );
             },
+            // Get purchase orders by creation time
+            (callback) => {
+                rest.post('/v1/purchase_orders/get_orders',
+                    {
+                        filter: {
+                            created_from: new Date(2000, 1, 1),
+                            created_to: new Date(2020, 12, 31),  
+                        }
+                    },
+                    (err, req, res, page) => {
+                        assert.isNull(err);
+
+                        assert.isObject(page);
+                        assert.lengthOf(page.data, 2);
+
+                        callback();
+                    }
+                );
+            },
             // Update the purchase order
             (callback) => {
                 purchaseOrder1.state = PurchaseOrderStateV1.Paid;

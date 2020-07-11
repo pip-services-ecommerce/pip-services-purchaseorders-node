@@ -16,7 +16,7 @@ export class PurchaseOrdersMongoDbPersistence
         super('purchase_orders');
         super.ensureIndex({ customer_id: 1 });
     }
-    
+
     private composeFilter(filter: any) {
         filter = filter || new FilterParams();
 
@@ -32,7 +32,7 @@ export class PurchaseOrdersMongoDbPersistence
             ids = ids.split(',');
         if (_.isArray(ids))
             criteria.push({ _id: { $in: ids } });
-            
+
         let state = filter.getAsNullableString('state');
         if (state != null)
             criteria.push({ state: state });
@@ -40,10 +40,18 @@ export class PurchaseOrdersMongoDbPersistence
         let customerId = filter.getAsNullableString('customer_id');
         if (customerId != null)
             criteria.push({ customer_id: customerId });
-                
+
+        let createdFrom = filter.getAsNullableDateTime('created_from');
+        if (createdFrom != null)
+            criteria.push({ create_time: { $gte: createdFrom } });
+
+        let createdTo = filter.getAsNullableDateTime('created_to');
+        if (createdTo != null)
+            criteria.push({ create_time: { $lte: createdTo } });
+
         return criteria.length > 0 ? { $and: criteria } : null;
     }
-    
+
     public getPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams,
         callback: (err: any, page: DataPage<PurchaseOrderV1>) => void): void {
         super.getPageByFilter(correlationId, this.composeFilter(filter), paging, null, null, callback);

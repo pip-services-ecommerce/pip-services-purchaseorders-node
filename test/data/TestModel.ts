@@ -11,6 +11,7 @@ export class TestModel {
             currency_code: 'USD',
             total: 100,
             state: PurchaseOrderStateV1.New,
+            create_time: new Date(2005, 4, 14),
             items: [{
                 price: 40,
                 product_id: 'product-1',
@@ -37,6 +38,7 @@ export class TestModel {
             currency_code: 'USD',
             total: 100,
             state: PurchaseOrderStateV1.New,
+            create_time: new Date(1983, 1, 10),
             items: [{
                 price: 10,
                 product_id: 'product-1',
@@ -55,6 +57,7 @@ export class TestModel {
             currency_code: 'USD',
             total: 50,
             state: PurchaseOrderStateV1.Paid,
+            create_time: new Date(2013, 2, 11),
             items: []
         };
     }

@@ -21,6 +21,8 @@ Get purchase orders by filter
     - ids: string - (optional) list of unique order ids
     - customer_id: string - (optional) order reference customer id
     - state: string - (optional) order state (PurchaseOrderStateV1)
+    - created_from: Date - (optional) orders with creation time greater than specified
+    - created_to: Date - (optional) orders with creation time less than specified
 - paging: Object
   - skip: int - (optional) start of page (default: 0). Operation returns paged result
   - take: int - (optional) page length (max: 100). Operation returns paged result

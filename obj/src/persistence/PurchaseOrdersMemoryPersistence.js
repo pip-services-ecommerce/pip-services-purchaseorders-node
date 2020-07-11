@@ -23,6 +23,8 @@ class PurchaseOrdersMemoryPersistence extends pip_services3_data_node_1.Identifi
         let state = filter.getAsNullableString('state');
         let customerId = filter.getAsNullableString('customer_id');
         let ids = filter.getAsObject('ids');
+        let createdFrom = filter.getAsNullableDateTime('created_from');
+        let createdTo = filter.getAsNullableDateTime('created_to');
         // Process ids filter
         if (_.isString(ids))
             ids = ids.split(',');
@@ -36,6 +38,10 @@ class PurchaseOrdersMemoryPersistence extends pip_services3_data_node_1.Identifi
             if (state && item.state != state)
                 return false;
             if (customerId && item.customer_id != customerId)
+                return false;
+            if (createdFrom && item.create_time && item.create_time < createdFrom)
+                return false;
+            if (createdTo && item.create_time && item.create_time > createdTo)
                 return false;
             return true;
         };
