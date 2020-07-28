@@ -8,6 +8,7 @@ export declare class PurchaseOrderV1 implements IStringIdentifiable {
     state?: string;
     state_details?: string;
     currency_code: string;
+    retries?: number;
     create_time?: Date;
     update_time?: Date;
     paid_time?: Date;

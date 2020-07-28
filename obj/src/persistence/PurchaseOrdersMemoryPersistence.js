@@ -25,6 +25,7 @@ class PurchaseOrdersMemoryPersistence extends pip_services3_data_node_1.Identifi
         let ids = filter.getAsObject('ids');
         let createdFrom = filter.getAsNullableDateTime('created_from');
         let createdTo = filter.getAsNullableDateTime('created_to');
+        let productId = filter.getAsNullableString('product_id');
         // Process ids filter
         if (_.isString(ids))
             ids = ids.split(',');
@@ -42,6 +43,8 @@ class PurchaseOrdersMemoryPersistence extends pip_services3_data_node_1.Identifi
             if (createdFrom && item.create_time && item.create_time < createdFrom)
                 return false;
             if (createdTo && item.create_time && item.create_time > createdTo)
+                return false;
+            if (productId && item.items && item.items.filter(x => x.product_id == productId).length == 0)
                 return false;
             return true;
         };

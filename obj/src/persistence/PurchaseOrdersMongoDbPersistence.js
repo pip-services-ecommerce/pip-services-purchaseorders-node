@@ -32,6 +32,15 @@ class PurchaseOrdersMongoDbPersistence extends pip_services3_mongodb_node_1.Iden
         let createdTo = filter.getAsNullableDateTime('created_to');
         if (createdTo != null)
             criteria.push({ create_time: { $lte: createdTo } });
+        let productId = filter.getAsNullableString('product_id');
+        if (productId != null)
+            criteria.push({
+                items: {
+                    $elemMatch: {
+                        product_id: productId
+                    }
+                }
+            });
         return criteria.length > 0 ? { $and: criteria } : null;
     }
     getPageByFilter(correlationId, filter, paging, callback) {

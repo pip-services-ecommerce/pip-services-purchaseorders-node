@@ -38,6 +38,7 @@ export class PurchaseOrdersMemoryPersistence
         let ids = filter.getAsObject('ids');
         let createdFrom = filter.getAsNullableDateTime('created_from');
         let createdTo = filter.getAsNullableDateTime('created_to');
+        let productId = filter.getAsNullableString('product_id');
 
         // Process ids filter
         if (_.isString(ids))
@@ -45,7 +46,7 @@ export class PurchaseOrdersMemoryPersistence
         if (!_.isArray(ids))
             ids = null;
 
-        return (item) => {
+        return (item: PurchaseOrderV1) => {
             if (id && item.id != id)
                 return false;
             if (ids && _.indexOf(ids, item.id) < 0)
@@ -58,6 +59,9 @@ export class PurchaseOrdersMemoryPersistence
                 return false;
             if (createdTo && item.create_time && item.create_time > createdTo)
                 return false;
+            if (productId && item.items && item.items.filter(x => x.product_id == productId).length == 0)
+                return false;
+                
             return true;
         };
     }

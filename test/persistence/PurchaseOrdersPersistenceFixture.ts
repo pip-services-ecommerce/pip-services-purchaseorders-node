@@ -226,6 +226,24 @@ export class PurchaseOrdersPersistenceFixture {
                     }
                 );
             },
+            // Get purchase orders filtered by product id
+            (callback) => {
+                this._persistence.getPageByFilter(
+                    null,
+                    FilterParams.fromValue({
+                        product_id: 'product-1'
+                    }),
+                    new PagingParams(),
+                    (err, page) => {
+                        assert.isNull(err);
+
+                        assert.isObject(page);
+                        assert.lengthOf(page.data, 2);
+
+                        callback();
+                    }
+                );
+            },
         ], done);
     }
 
